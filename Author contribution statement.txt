@@ -1,0 +1,2 @@
+Otávio Ivo: Conceptualization; Methodology; Software; Validation; Formal Analysis; Investigation; Data Curation; Writing - Original Draft; Writing - Review & Editing; Visualization
+Lars Imsland: Conceptualization; Methodology; Resources; Writing - Original Draft; Writing - Review & Editing; Supervision; Project administration; Funding acquisition

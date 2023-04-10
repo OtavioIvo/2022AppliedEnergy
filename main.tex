@@ -1,0 +1,99 @@
+\documentclass[authoryear]{elsarticle}
+\usepackage{pgfplots}
+\usepackage[utf8]{inputenc}
+\setlength{\bibhang}{0pt}
+\usepackage{import}
+\usepackage{multirow,makecell}
+\usepackage{amsmath,amssymb}
+\usepackage{mathtools}
+\usepackage{import}
+\usepackage{filecontents}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{accents}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[makeroom]{cancel}
+\pgfplotsset{compat=newest}
+% Pgfplots
+\usepgfplotslibrary{dateplot}
+\usepgfplotslibrary{statistics}
+\usepgfplotslibrary{colormaps}
+% Tikz library
+\usetikzlibrary{patterns}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{fit}
+\usetikzlibrary{external} 
+\usetikzlibrary{arrows, decorations.pathreplacing}
+% Necessary for tikz externalization
+%\tikzexternalize[prefix=Results/Figures/traditional]
+\usepackage{subcaption}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newtheorem{assumption}{Assumption}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proof}{Proof}
+\newtheorem{remark}{Remark}
+
+\journal{Computers and Chemical Engineering}
+
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Produced Water Management through Optimal Operation of Produced water re-injection facility \tnoteref{t1,t2}}
+
+\author[1]{Otavio Fonseca Ivo\corref{cor1}
+}
+\ead{fonseca.i.otavio@ntnu.no}
+
+\author[1]{Lars Struen Imsland
+}
+\ead{lars.imsland@ntnu.no}
+
+\cortext[cor1]{Corresponding author}
+\address[1]{Department of Engineering Cybernetics, Norwegian University of Science and Technology, O. S. Bragstads plass 2, 7034 Trondheim, Norway}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+    
+\end{abstract}
+\begin{keyword}
+Daily production optimization; Produced water re-injection; Economic model predictive control; Flow-weighted mean concentration
+\end{keyword}
+\end{frontmatter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\subimport*{01Introduction/}{motivation.tex}
+
+\section{Literature Review}
+\subimport*{02Literature_review/}{Literature_review.tex}
+\section{Notation}
+We refer to the set of non-negative real numbers as $\mathbb{R}_{\geq 0}$, and the set of natural numbers as $\mathbb{N}$. The time domain is defined as $t \in \mathbb{R}_{\geq 0}$. Furthermore, we define fixed-times which are pre-established time constants and are represented as $t_m \in \mathbb{R}_{\geq 0},\, \forall m \in \mathbb{N}$, with $t_m < t_{m+1}$.  System variables use the notation $\cdot(t)$, while predictive variables use~$\cdot(k\vert{t_c})$, which denotes the k-step ahead prediction at the current time $t_c\in\mathbb{R}_{\geq{0}}$. We use the accent $(\bar{\cdot})$ to indicate constants. An optimal solution is indicated by the superscript ${\left(\cdot\right)}^*$.
+\subimport*{04Problemstatement/}{problem_statement.tex}
+\subimport*{05FWMC_EMPC_MINLP/}{MINLP.tex}
+
+\section{Results and Discussion}
+
+\section{Conclusion}
+\subimport*{09Conclusion/}{conclusion.tex}
+\subimport*{appendix/}{appendix.tex}
+\section*{Acknowledgement}
+This research is a part of BRU21~–~NTNU Research and Innovation Program on 
+Digital and Automation Solutions for the Oil and Gas Industry \linebreak (www.ntnu.edu/bru21) 
+and supported by OKEA ASA\@. In addition, we would like to acknowledge license 
+partners Neptune Energy Norge AS, and Petoro AS for allowing the usage of field 
+data. The authors would like to thank employees at OKEA Per Magne Bjellvåg, 
+Alf Sebastian Lackner, Even Moen Kirkholt, Raymond Hellerud and Katrine Torvik 
+for their valuable input.
+
+\bibliographystyle{elsarticle-harv}\biboptions{authoryear}
+\bibliography{library}
+
+\end{document}

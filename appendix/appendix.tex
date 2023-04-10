@@ -1,0 +1,370 @@
+\section{Appendix}
+\subsection{Pumps formulation}
+We refer to the fixed-speed pump arcs as $\mathcal{L}_{FPS}$. An FSP is given by the following set of equations:
+\begin{subequations}\label{eq:FSP}
+    \begin{alignat}{2} 
+        & H_i - H_j = H^p_{(i,j)} \label{eq:FSP:energy_balance}
+        \\
+        &H^p_{(i,j)} = \bar{A} + \bar{B}{q_{(i,j)}}^2, \label{eq:FSP:QH}
+        \\
+        &W^p_{(i,j)} = \bar{\gamma} H^p_{(i,j)} q_{(i,j)}, \label{eq:FSP:hydraulic_power}
+        \\
+        &\bar{q}^{lb}_{(i,j)} \leq  q_{(i,j)} \leq \bar{q}^{ub}_{(i,j)},
+    \end{alignat}
+\end{subequations}
+with five decision variables $H_i$, $H_j$, $H^p$, $q$, and $W^p$. As there are three equality constraints, the set of equations~\eqref{eq:FSP} gives two degrees of freedom per FSP\@. 
+\par With the possibility of turning on/off the FSPs, the set of equations~\eqref{eq:FSP} is modified as follows,
+\begin{subequations}\label{eq:FSP_int}
+    \begin{alignat}{2}
+        & H_i - H_j = H^p_{(i,j)} + H^c_{(i,j)}, \label{eq:FSP_on/off:energy_balance}
+        \\
+        & H^p_{(i,j)} = \bar{A}_{(i,j)} + \bar{B}_{(i,j)}{q_{(i,j)}}^2 - (1 - Z_{(i,j)})\bar{A}_{(i,j)}, \label{eq:FSP_on/off:QH}
+        \\
+        & W^p_{(i,j)} = \bar{\gamma} H^p_{(i,j)} q_{(i,j)} \label{eq:FSP_on/off:hydraulic_power}
+        \\
+        & H^c_{(i,j)}Z_{(i,j)} = 0
+        \\
+        & \bar {q}^{lb}_{(i,j)} Z_{(i,j)}  \leq  q_{(i,j)} \leq \bar{q}^{ub}_{(i,j)}Z_{(i,j)} \label{eq:FSP_qbounds}
+        \\
+        & H^c_{(i,j)} \leq \bar H^{max}_{(i,j)} \label{eq:FSP_checkbounds}
+        \\
+        & Z_{(i,j)} \in \{0,1\}
+    \end{alignat}
+\end{subequations}
+with decision variable $Z_{(i,j)}$. The introduction of $Z_{(i,j)}$ in~\eqref{eq:FSP_qbounds} and the addition of~\eqref{eq:FSP_checkbounds} with $H^c_{(i,j)}$ represents the behavior of a check valve. The set of equations~\eqref{eq:FSP_int} has seven variables and three equality constraints. Thus, four degrees of freedom. As $Z_{(i,j)}$ is an integer variable, the following scenarios are possible:
+\begin{subequations}
+    \begin{alignat}{2}
+        &Z_{(i,j)} = 1, && Z_{(i,j)} = 0
+        \\
+        & H_i - H_j = H^p_{(i,j)} + H^c_{(i,j)} && H_i - H_j = H^p_{(i,j)} + H^c_{(i,j)} \label{eq:FSP_hydraulic_balance}
+        \\
+        & H^p_{(i,j)} = \bar{A}_{(i,j)} + \bar{B}_{(i,j)}{q_{(i,j)}}^2, \quad && H^p_{(i,j)} = \bar{B}_{(i,j)}{q_{(i,j)}}^2,
+        \\
+        & W^p_{(i,j)} = \bar{\gamma} H^p_{(i,j)} q_{(i,j)}, && W^p_{(i,j)} = \bar{\gamma} H^p_{(i,j)} q_{(i,j)},
+        \\
+        & \bar{q}_{(i,j)}^{lb} \leq  q_{(i,j)} \leq \bar q_{(i,j)}^{ub}, && 0 \leq q_{(i,j)} \leq 0,
+        \\
+        &0 \leq H^c_{(i,j)} \leq 0 && - \bar{M}_{(i,j)} \leq H^c_{(i,j)} \leq 0,
+    \end{alignat}
+\end{subequations}
+one may notice that two of the four degrees of freedom are consumed in both scenarios, thus two degrees of freedom remains for each FSP\@. We notice that for the scenario $Z_{(i,j)}=1$, the set of equations~\eqref{eq:FSP} is recovered, and $H^c_{(i,j)}$ is equal to zero. As for the scenario $Z_{(i,j)}=0$, a different set of equations is formed in which $q_{(i,j)}$, $H^p_{(i,j)}$ and $W^p_{(i,j)} $ are equal to zero.
+
+\par We refer to variable speed pumps as VSP $\mathcal{L}_{VSP}$.
+\begin{subequations}\label{eq:vsp}
+    \begin{alignat}{2}
+        & H_i - H_j = H^p_{(i,j)}
+        \\
+        & H^{p,ub}_{(i,j)} = \bar{A}_{(i,j)} + \bar{B}_{(i,j)} q_{(i,j)}^2 + \bar{C}_{(i,j)} {\bar{w}_{(i,j)}^{ub}}^2,
+        \\
+        & H^{p,lb}_{(i,j)} = \bar{A}_{(i,j)} + \bar{B}_{(i,j)} q_{(i,j)}^2 + \bar{C}_{(i,j)} {\bar{w}_{(i,j)}^{lb}}^2,
+        \\
+        & W^p_{(i,j)} = \gamma H^p_{(i,j)} q_{(i,j)},
+        \\
+        & q^{ub}_{(i,j)} = \bar{A}^{ub}_{(i,j)} + \bar{B}^{ub}_{(i,j)} H^p_{(i,j)},
+        \\
+        & q^{lb}_{(i,j)} = \bar{A}^{lb}_{(i,j)} + \bar{B}^{lb}_{(i,j)} H^p_{(i,j)},
+        \\
+        & H^{p,lb}_{(i,j)} \leq H^p_{(i,j)} \leq H^{p,ub}_{(i,j)},
+        \\
+        & q^{lb}_{(i,j)} \leq q_{(i,j)} \leq q^{ub}_{(i,j)},
+    \end{alignat}
+\end{subequations}
+with nine decision variables $H_i$, $H_j$, $H^{p,lb}_{(i,j)}$, $H^{p,ub}_{(i,j)}$, $H^p_{(i,j)}$, $q^{ub}_{(i,j)}$, $q^{lb}_{(i,j)}$, $q_{(i,j)}$, and $W^p_{(i,j)}$. A total of six equality equations are present in~\eqref{eq:vsp}, thus giving three degrees of freedom per VSP\@. The possibility of turning a pump on/off enables one to describe the behavior of VSPs as follows,
+\begin{subequations} \label{eq:VSP_int}
+    \begin{alignat}{2}
+        & H_i - H_j = H^p_{(i,j)} + H^c_{(i,j)}
+        \\
+        &H^{p,ub}_{(i,j)} = \bar{A}_{(i,j)} + \bar{B}_{(i,j)} {q_{(i,j)}}^2 + \bar{C}_{(i,j)} {\bar{w}^{ub}_{(i,j)}}^{2} - (1 - Z)(\bar{A}_{(i,j)} + \bar{C}_{(i,j)} {w_{(i,j)}^{ub}}^2),
+        \\
+        &H^{p,lb}_{(i,j)} = \bar{A}_{(i,j)} + \bar{B}_{(i,j)} {q_{(i,j)}}^2 + \bar{C}_{(i,j)} {\bar{w}^{lb}_{(i,j)}}^{2} - (1 - Z)(\bar{A}_{(i,j)} + \bar{C}_{(i,j)} {w_{(i,j)}^{lb}}^2),
+        \\
+        & W^p_{(i,j)} = \bar{\gamma} H^p_{(i,j)} q_{(i,j)},
+        \\
+        &  q^{ub}_{(i,j)} = \bar{A}^{ub}_{(i,j)} + \bar{B}^{ub}_{(i,j)} H^p_{(i,j)} - (1 - Z_{(i,j)}) \bar{A}^{ub}_{(i,j)}
+        \\
+        &  q^{lb}_{(i,j)} = \bar{A}^{lb}_{(i,j)} + \bar{B}^{lb}_{(i,j)} H^p_{(i,j)} - (1 - Z_{(i,j)}) \bar{A}^{lb}_{(i,j)}
+        \\
+        & H^{p,lb}_{(i,j)} \leq H^{p}_{(i,j)} \leq H^{p,ub}_{(i,j)},
+        \\
+        & q^{lb}_{(i,j)} \leq q \leq q^{ub}_{(i,j)}
+        \\
+        & -\bar M_{(i,j)} (1 - Z_{(i,j)}) \leq H^c_{(i,j)} \leq 0
+        \\
+        &Z_{(i,j)} \in \{0,1\}
+    \end{alignat}
+\end{subequations}
+in which variables and equations of check valve are added. In the set of equations~\eqref{eq:VSP_int}, there are eleven decision variables, with six equality constraints, granting a total of five degrees of freedom per VSP\@. For the set of equations~\eqref{eq:VSP_int} two possible scenarios are given below,
+\begin{subequations}
+    \begin{alignat}{2}
+        &Z = 1 && Z = 0
+        \\
+        & H_i - H_j = H^p_{(i,j)} + H^c_{(i,j)} && H_i - H_j = H^p_{(i,j)} + H^c_{(i,j)}
+        \\
+        &H^{p,ub}_{(i,j)} = \bar{A}_{(i,j)} + \bar{B}_{(i,j)} {q_{(i,j)}}^2 + \bar{C}_{(i,j)} {\bar{w}^{ub}_{(i,j)}}^{2}, \quad && H^{p,ub}_{(i,j)} = \bar{B}_{(i,j)} q_{(i,j)}^2, \label{eq:VSP_Hgub}
+        \\
+        &H^{p,lb}_{(i,j)} = \bar{A}_{(i,j)} + \bar{B}_{(i,j)} {q_{(i,j)}}^2 + \bar{C}_{(i,j)} {\bar{w}^{lb}_{(i,j)}}^{2}, \quad && H^{p,lb}_{(i,j)} = \bar{B}_{(i,j)} q_{(i,j)}^2, \label{eq:VSP_Hglb}
+        \\
+        & W^p_{(i,j)} = \bar{\gamma} H^p_{(i,j)} q_{(i,j)}, && W^p = \bar{\gamma} H^p_{(i,j)} q_{(i,j)},
+        \\
+        &  q^{ub}_{(i,j)} = \bar{A}^{ub}_{(i,j)} + \bar{B}^{ub}_{(i,j)} H^p_{(i,j)} && q^{ub}_{(i,j)} = \bar{B}^{ub}_{(i,j)} H^p_{(i,j)}
+        \\
+        &  q^{lb}_{(i,j)} = \bar{A}^{lb}_{(i,j)} + \bar{B}^{lb}_{(i,j)} H^p_{(i,j)} && q^{lb}_{(i,j)} = \bar{B}^{lb}_{(i,j)} H^p_{(i,j)}
+        \\
+        & H^{p,lb}_{(i,j)} \leq H^p_{(i,j)} \leq H^{p,ub}_{(i,j)}, && H^{p,lb}_{(i,j)} \leq H^p_{(i,j)} \leq H^{p,ub}_{(i,j)}, \label{eq:VSP_Hbound}
+        \\
+        & q^{lb}_{(i,j)} \leq q_{(i,j)} \leq q^{ub}_{(i,j)}&& q^{lb}_{(i,j)} \leq q_{(i,j)} \leq q^{ub}_{(i,j)} \label{eq:VSP_qbound}
+        \\
+        & 0 \leq H^c_{(i,j)} \leq 0 && -\bar M_{(i,j)} \leq H^c_{(i,j)} \leq 0,
+    \end{alignat}
+\end{subequations}
+when $Z=1$, the set of equations~\eqref{eq:VSP_int} is recovered, with two degrees of freedom for each VSP\@. As for $Z=0$, both bounds in~\eqref{eq:VSP_Hbound} becomes active, which implies that,
+\begin{equation}
+    H^p_{(i,j)} = \bar{B}_{(i,j)} q_{(i,j)}^2.
+\end{equation} 
+By substituting $H^p_{(i,j)}$ in~\eqref{eq:VSP_qbound}, one gets that,
+\begin{equation}
+    \bar{B}^{lb}_{(i,j)}\bar{B}_{(i,j)} q_{(i,j)}^2 \leq q_{(i,j)} \leq \bar{B}^{ub}_{(i,j)}\bar{B}_{(i,j)} q_{(i,j)}^2.
+\end{equation} Given that $\bar{B}$ is a negative constant and that $\bar{B}^{lb}$ and $\bar{B}^{ub}$ are positive constants, if $\bar{B}^{lb} < \bar{B}^{ub}$ holds, then $q_{(i,j)} = 0$ and $H^p_{(i,j)}=0$. 
+Decision variables
+\begin{equation}
+    \omega = \left[\begin{array}{ccccccccccc}
+        H_i & H_j & H^p_{(i,j)} & H^{p,lb}_{(i,j)} & H^{p,ub}_{(i,j)} & H^c_{(i,j)} &W^p_{(i,j)} & q_{(i,j)} & q^{ub}_{(i,j)} & q^{lb}_ {(i,j)} & Z_{(i,j)}
+    \end{array}\right]
+\end{equation}
+The jacobian of equality constraints are given below:
+\begin{equation}
+    \nabla g = \left[\begin{array}{ccccccccccc}
+        1 & -1 & -1 & 0 & 0 & -1 & 0 & 0& 0 & 0 & 0  \\
+        0 & 0 & 0 & 1  & 0 & 0 & 0 & -2Bq& 0 & 0 & -(A + C{w^{ub}}^2)\\
+        0 & 0 & 0 & 0  & 1 & 0 & 0 & -2Bq& 0 & 0 & -(A + C{w^{lb}}^2) \\
+        0 & 0 & -\gamma q & 0 & 0 & 0 & 1& -\gamma H^p & 0 & 0 & 0 \\
+        0 & 0 & -Bub & 0 & 0 & 0 & 0& 0& 1 & 0 & -A^{ub} \\
+        0 & 0 & -Blb & 0 & 0 & 0 & 0& 0& 0 & 1 & -A^{lb} 
+    \end{array}\right]
+\end{equation}
+
+\begin{equation}
+    \nabla g = \left[\begin{array}{ccccccccccc}
+        0& 0 & 0 & 0 & 0 & q & 0 & H^c & 0 & 0 & 0
+    \end{array}\right]
+\end{equation}
+
+
+The jacobian of equality and active constraints when $Z=0$ is given below:
+\begin{equation}\label{eq:matrix_jac}
+    \nabla g(H,q) =\begin{bmatrix} 1& -1& -1&0&0& -1&0&0&0&0
+        \\0&0&0& 1&0&0&0& -2Bq&0&0
+        \\0&0&0&0& 1&0&0& -2Bq&0&0
+        \\0&0& (-q)&0&0&0& 1& (-H_p)&0&0
+        \\0&0& (-B^{ub})&0&0&0&0&0& 1&0
+        \\0&0& (-B^{lb})&0&0&0&0&0&0& 1
+        \\0&0& -1& 1&0&0&0&0&0&0
+        \\0&0& 1&0& -1&0&0&0&0&0
+        \\0&0&0&0&0&0&0& -1&0& 1
+        \\0&0&0&0&0&0&0& -1& 1&0
+    \end{bmatrix},
+\end{equation}
+if $q = 0$ and $H^p_{(i,j)}=0$, some manipulation can be made to show that linear dependency between the seventh and eighth rows occur in~\eqref{eq:matrix_jac},
+\begin{equation}\label{eq:matrix_jac_q0}
+    \nabla g(0,0) = \begin{bmatrix} 1& -1& 0&0&0& -1&0&0&0&0
+        \\0&0&0& 1&0&0&0& 0&0&0
+        \\0&0&0&0& 1&0&0& 0&0&0
+        \\0&0& 0&0&0&0& 1& 0&0&0
+        \\0&0& -B^{ub}&0&0&0&0&0& 1&0
+        \\0&0& -B^{lb}&0&0&0&0&0&0& 1
+        \\0&0& -1& 0&0&0&0&0&0&0
+        \\0&0& 1&0& 0&0&0&0&0&0
+        \\0&0&0&0&0&0&0& -1&0& 1
+        \\0&0&0&0&0&0&0& -1& 1&0
+    \end{bmatrix}.
+\end{equation}
+Due to that, numerical issues are deemed to occur when $Z=0$ is a parameter.
+
+
+\par The equations that describe a switch valve is given below,
+\begin{alignat}{2}
+    &H_i - H_j = H^v_{(i,j)}
+    \\
+    &q^p_{(i,j)} = 27.3\bar{C_v} H^{v,r}_{(i,j)}\sqrt{\bar{g}/1e5}
+    \\
+    &q^n_{(i,j)} = -27.3 \bar{C_v} H^{v,r}_{(i,j)}\sqrt{\bar{g}/1e5}
+    \\
+    &{H^{v,r}_{(i,j)}}^2 = H^v_{(i,j)}(2 Z^a_{(i,j)} - 1)
+    \\
+    &q_{(i,j)} = Z_{(i,j)}(q^p_{(i,j)} Z^a_{(i,j)} + q^n_{(i,j)} (1 - Z^a_{(i,j)}))
+\end{alignat}
+the set of equations is augmented with inequality constraints as follows,
+\begin{equation}
+    Z^a_{(i,j)} \in \{0,1\}, Z_{(i,j)} \in \{0,1\},
+\end{equation}
+a one way switch valve has the addition of the following inequality constraint,
+\begin{equation}
+    - q_{(i,j)} \leq 0
+\end{equation}
+The vector of decision variables for the relaxed NLP is given below,
+\begin{alignat}{2}
+    \omega_{(i,j)} = \begin{bmatrix}
+        H_i & H_j & H^v_{(i,j)} & q^p_{(i,j)} & q^n_{(i,j)} & H^{v,r}_{(i,j)} & q_{(i,j)} & Z^a_{(i,j)} & Z_{(i,j)}
+    \end{bmatrix}^T
+\end{alignat}
+The gradient for the equality constraints are given below,
+\begin{alignat}{2}
+    \nabla g = \begin{bmatrix}
+        1 & 1 & -1                  & 0 & 0 & 0 & 0 & 0 & 0\\
+        0 & 0 & 0                   & 1 & 0 & -27.3C_v \sqrt{g/1e5} & 0 & 0 & 0\\
+        0 & 0 & 0                   & 0 & 1 & 27.3C_v \sqrt{g/1e5} & 0 & 0 & 0\\
+        0 & 0 & -(2Z^a_{(i,j)}-1)   & 0 & 0 & 2H^{v,r}_{(i,j)} & 0 & 2H^v_{(i,j)} & 0  \\
+        0 & 0 & 0                   & -Z_{(i,j)} Z^a_{(i,j)} & -Z_{(i,j)}(1 - Z^a_{(i,j)}) & 0 & 1 & - Z_{(i,j)}q^p_{(i,j)} & -q^n_{(i,j)} Z^a_{(i,j)}\\
+    \end{bmatrix}
+\end{alignat}
+The gradient of inequality constraints are given below,
+\begin{alignat}{2}
+    \nabla h =\begin{bmatrix}
+        0 & 0 & 0 & 0& 0 & 0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 0& 0 & 0 & 0 & -1 & 0 \\
+        0 & 0 & 0 & 0& 0 & 0 & 0 & 0 & 1 \\
+        0 & 0 & 0 & 0& 0 & 0 & 0 & 0 & -1 \\
+        0 & 0 & 0 & 0& 0 & 0 & -1 & 0 & 0
+    \end{bmatrix}
+\end{alignat}
+
+
+if $Z^a = 0$
+
+\begin{alignat}{2}
+    \begin{bmatrix}
+        1 & 1 & -1                  & 0 & 0 & 0 & 0 & 0 & 0\\
+        0 & 0 & 0                   & 1 & 0 & -27.3C_v \sqrt{g/1e5} & 0 & 0 & 0\\
+        0 & 0 & 0                   & 0 & 1 & 27.3C_v \sqrt{g/1e5} & 0 & 0 & 0\\
+        0 & 0 & 1   & 0 & 0 & 2H^{v,r}_{(i,j)} & 0 & 2H^v_{(i,j)} & 0  \\
+        0 & 0 & 0                   & 0 & -Z_{(i,j)} & 0 & 1 & - Z_{(i,j)}q^p_{(i,j)} & 0\\
+    \end{bmatrix}
+\end{alignat}
+
+if $Z^a = 0$ and $Z = 0$
+
+\begin{alignat}{2}
+    \begin{bmatrix}
+        1 & 1 & -1                  & 0 & 0 & 0 & 0 & 0 & 0\\
+        0 & 0 & 0                   & 1 & 0 & -27.3C_v \sqrt{g/1e5} & 0 & 0 & 0\\
+        0 & 0 & 0                   & 0 & 1 & 27.3C_v \sqrt{g/1e5} & 0 & 0 & 0\\
+        0 & 0 & 1   & 0 & 0 & 2H^{v,r}_{(i,j)} & 0 & 2H^v_{(i,j)} & 0  \\
+        0 & 0 & 0                   & 0 & 0 & 0 & 1 & 0 & 0\\
+    \end{bmatrix}
+\end{alignat}
+
+if $Z^a = 0$, $Z = 0$, $H^{v,r}=0$ and $H^v=0$
+
+\begin{alignat}{2}
+    \begin{bmatrix}
+        1 & 1 & -1 & 0 & 0 & 0 & 0 & 0 & 0\\
+        0 & 0 & 0 & 1 & 0 & -27.3C_v \sqrt{g/1e5} & 0 & 0 & 0\\
+        0 & 0 & 0 & 0 & 1 & 27.3C_v \sqrt{g/1e5} & 0 & 0 & 0\\
+        0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
+        0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
+    \end{bmatrix}
+\end{alignat}
+\subsection{Mass balance and SOS 1}
+
+The global mass balance is naturally obtained by guaranteeing that the mass balance in each node holds. 
+\begin{alignat}{2}
+    & 0 = d_{(1)} - q_{(1,2)} \\
+    & 0 = q_{(1,2)} - d_{(2)} \\
+    & 0 = q_{(1,2)} - \bar{K} \phi_{(1,2)} \sqrt{\bar{H}^L_{(1,2)}} \\
+    & 0 \leq Z_{(1,2)} \bar{q}_{(1,2)}^{ub} - q_{(1,2)}
+\end{alignat}
+\begin{equation}
+    \omega = \left[\begin{array}{ccccccccccc}
+        d_1 & q_{(1,2)} & d_2 & Z_{(1,2)} & \phi_{(1,2)}
+    \end{array}\right]
+\end{equation}
+
+\begin{equation}
+    \nabla g = \left[\begin{array}{ccccccccccc}
+        1 &-1 & 0& 0                                  & 0\\
+        0 & 1 &-1& 0                                  & 0\\
+        0 & 1 & 0& - \bar{K} \sqrt{\bar{H}^L_{(1,2)}} & 0
+    \end{array}\right] \quad \nabla h = \left[\begin{array}{ccccccccccc}
+        0 &-1 & 0& 0 & 1
+    \end{array}\right]
+\end{equation}
+
+
+As the SOS1 in my application case is associated with the global mass balance, I am basically saying to the algorithm. "Hey, could you please start by dealing with the global mass balance? "
+
+Also, we do know that children nodes in bonmin uses as a initial guess the solution of the father node. So, maybe it helps convergence when the global mass balance is forced already in the beginning.
+
+\subsection{Branch and bound}
+
+Branch and bound is a systematic approach in which the original optimization problem ($P$) is indirectly solved by solving several   relaxed optimization sub-problems ($P_i^r$) in a successive manner. The algorithm starts by relaxing the integer variables ($z \in \mathcal{Z}^{n_z}$) of $P$ into continuous variables ($z^{r} \in \mathcal{R}^{n_z}$), which creates the relaxed sub-problem $P_0^r$. An optimal solution to $P_0^r$ is obtained, and the algorithm checks the values of $z^*$. If $z^*$ contains only integer values, the algorithm stops. Otherwise, at least one $z^*$ is non-integer and the algorithm should select a variable $z_i$ to branch upon.
+
+
+
+At each node a solution for the NLP relaxation is obtained. Fathoming of a subtree can be done under the following conditions: the solution is integer, there is no feasible solution, or the best solution in the subtree is worse than the incumbent solution. Incumbent solution is defined as the best integer feasible solution obtained so far at the decision tree. 
+
+Wide branching is performed by considering SOS1 based on the global mass balance.
+
+It is possible to argue that the oil production demand dominates the objective function. By giving priority to the mass balance what can happen?
+1- Incumbent solutions with good objective values are moved to the top of a decision tree, which can lead to more effective pruning.
+2- Infeasibility of a sub-branch can be found earlier.
+
+Am I doing constraint propagation/node presolving? "exploits the repeated application of logical inference rules inan attempt to derive contradictions that allow a subproblem to be pruned."
+
+, different re-injection operational nodes should be first explored. by exploring first the integer variables associated with the mass balance.
+
+will lead to quite incumbent solution can have a good objective values, which can cause pruning to be more effective.
+
+% Each sub-problem is based on a relaxed version of the original MINLP problem and, thus, contains a set of relaxed integer variables.
+
+% in which the original problem is relaxed  
+
+\subsection{Model - Fixed-speed pump}
+
+\begin{subequations}
+    \begin{alignat}{2}
+        & H_i - H_j = H^p_{(i,j)} + H^c_{(i,j)}, 
+        \\
+        & H^p_{(i,j)} = \bar{A}_{(i,j)} + \bar{B}_{(i,j)}{q_{(i,j)}}^2 - (1 - Z_{(i,j)})\bar{A}_{(i,j)}, 
+        \\
+        & W^p_{(i,j)} = \bar{\gamma} H^p_{(i,j)} q_{(i,j)} 
+        \\
+        & H^c_{(i,j)}Z_{(i,j)} = 0
+        \\
+        & \bar {q}^{lb}_{(i,j)} Z_{(i,j)}  \leq  q_{(i,j)} \leq \bar{q}^{ub}_{(i,j)}Z_{(i,j)} 
+        \\
+        & 0 \leq H^c_{(i,j)} \leq \bar H^{max}_{(i,j)} 
+        \\
+        & Z_{(i,j)} \in \{0,1\}
+    \end{alignat}
+\end{subequations}
+
+Due to SOS 1, the following scenarios are possible.
+\begin{subequations}
+    \begin{alignat}{2}
+    & H_i - H_j = H^p_{(i,j)} + H^c_{(i,j)},  
+    \\
+    & H^p_{(i,j)} = \bar{A}_{(i,j)} + \bar{B}_{(i,j)}{q_{(i,j)}}^2
+    \\
+    & W^p_{(i,j)} = \bar{\gamma} H^p_{(i,j)} q_{(i,j)} 
+    \\
+    & H^c_{(i,j)}Z_{(i,j)} = 0
+    \\
+    & \bar {q}^{lb}_{(i,j)} Z_{(i,j)}  \leq  q_{(i,j)} \leq \bar{q}^{ub}_{(i,j)}Z_{(i,j)} 
+    \\
+    & 0 \leq H^c_{(i,j)} \leq \bar H^{max}_{(i,j)} 
+    \\
+    & Z_{(i,j)} = 0
+    \end{alignat}
+\end{subequations}
+
+\begin{equation}
+    \omega = \left[\begin{array}{ccccccccccc}
+        H_i & H_j & H^p_{(i,j)} & H^c_{(i,j)} &W^p_{(i,j)} & q_{(i,j)} & q^{ub}_{(i,j)} & q^{lb}_ {(i,j)} & Z_{(i,j)}
+    \end{array}\right]
+\end{equation}
+
+\begin{equation}
+    \nabla g(\omega) = \begin{bmatrix}
+        1
+    \end{bmatrix}
+\end{equation}
