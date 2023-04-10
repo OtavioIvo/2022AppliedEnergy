@@ -1,0 +1,84 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[rgb]{xcolor}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+\usepgfplotslibrary{dateplot}
+\usepgfplotslibrary{statistics}
+\usepgfplotslibrary{colormaps}
+\usepackage{pgfplotstable}
+
+\newcommand{\colors}[0]{
+    \definecolor{clr1}{RGB}{255,127,0}
+    \definecolor{clr2}{RGB}{152,78,163}
+    \definecolor{clr3}{RGB}{77,175,74}
+    \definecolor{clr4}{RGB}{55,126,184}
+    \definecolor{clr5}{RGB}{228,26,28}
+}
+\newcommand{\colorsgray}[0]{
+\definecolor{clr1}{RGB}{247,247,247}
+\definecolor{clr2}{RGB}{217,217,217}
+\definecolor{clr3}{RGB}{189,189,189}
+\definecolor{clr4}{RGB}{150,150,150}
+\definecolor{clr5}{RGB}{115,115,115}
+\definecolor{clr6}{RGB}{82,82,82}
+\definecolor{clr7}{RGB}{37,37,37}
+}
+
+\newcommand{\colorsmix}[0]{
+\definecolor{clr1}{RGB}{247,247,247}
+\definecolor{clr2}{RGB}{217,217,217}
+\definecolor{clr3}{RGB}{189,189,189}
+\definecolor{clr4}{RGB}{229,245,224}
+\definecolor{clr5}{RGB}{115,115,115}
+\definecolor{clr6}{RGB}{82,82,82}
+\definecolor{clr7}{RGB}{222,45,38}
+}
+
+\newcommand{\plotthat}[4]{%
+		\addplot [color=#1, thick]
+			table [
+				col sep=comma,
+				trim cells=true,
+				y=#2,
+			    x=#3
+				] 
+				{#4};
+}
+\newcommand{\plotmark}[6]{%
+		\addplot [color=#1,mark=#5]
+			table [
+				col sep=comma,
+				trim cells=true,
+				y=#2,
+			           x=#3,
+			           each nth point={#6},
+				] 
+				{#4};
+}
+
+\newcommand{\pplot}[2]{%
+		\addplot [color=#1, thick]
+			table [
+				col sep=comma,
+				trim cells=true,
+				y=Y,
+			    	x=X
+				] 
+				{#2};
+}
+\newcommand{\effplot}[3]{
+	\addplot [color=black, 
+			thick,
+			dotted,
+			mark size=0.1pt,
+			#3]
+			table [
+			col sep=comma,
+			trim cells=true,
+			y=head,
+		    	x=volflow
+			] 
+		{#2};
+}
+

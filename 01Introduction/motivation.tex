@@ -1,0 +1,19 @@
+Waterflooding is an enhanced oil recovery technique widely employed in the Oil \& Gas industry. Its main purpose is to increase overall oil recovery factors from a reservoir asset by injecting water at injection wells located in different reservoir zones~\citep{}. The importance of waterflooding increases as a field becomes mature. Mature fields are characterized by a decline in oil production due to reserve depletion, which causes a decrease in reservoir pressure. Injecting of water through waterflooding enables one to maintain reservoir pressure while causing a sweeping effect over reminiscent oil towards  production wells~\citep{}. In offshore facilities, waterflooding can be implemented by either injecting ocean water or produced water. In the Norwegian Continental Shelf, a shift towards re-injecting produced water in the reservoir has been observed~\citep{}. This trend follows the zero discharge policy recommended by \citep{} to reduce marine pollution caused by offshore oil and gas production. Proper operation of a produced water re-injection facility is a challenging task as there is an increasing need to improve the facility economic and environmental performance. 
+
+\par A MINLP model has been developed in \citep{Zhou2019} for the optimal operation of waterflooding strategy. However, in this work it has been considered the presence of only fixed-speed pumps (FSP).
+
+
+\par Model predictive control (MPC) is a te
+
+
+According to~\citep{}, 
+
+\par In the traditional two-layered approach, the model employed in the real-time optimization layer should represent the process with a higher fidelity than the model in the lower layer. Contrary to the traditional approach, we showcase that the model at the MINLP layer does not necessarily need to present a higher fidelity than the one in the EMPC layer. In fact, the model at the MINLP layer should be rich enough to enable one to find the optimal steady-state integer variables. Once this is done, the EMPC layer becomes the sole responsible for keeping the process at its operational optimum.
+
+\par The work is structured as follows:
+\begin{itemize}
+    \item The virtual plant model as well as the main objectives are described in this section.
+    \item The hierarchical control structure is presented in this section.
+    \item The MINLP srategy is described in this section.
+    \item The EMPC strategy is described in this section.
+\end{itemize}

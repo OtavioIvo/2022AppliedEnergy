@@ -1,0 +1,225 @@
+\section{Control structure}
+In the previous section, it was shown that the system to be controlled contains both integer and non-integer variables as control inputs. To maximize operational revenue, the control structure proposed in this work is based at a two hierarchical layer approach. In this work, the first layer is composed of a steady-state mixed-integer nonlinear programming (MINLP), while the second has an economic model predictive control (EMPC). The purpose of the first layer is to obtain the set of on/off pumps (\textit{i.e.} select the integer variables). This information is passed to the second layer, in which the non-integer control inputs are chosen. The overall objective is to maximize the process revenue, while operating the pumping system in a healthy manner. 
+\section{}
+An algorithm for 
+\section{Valve model}
+Automatic switch valves installed in the re-injection templates can be set to open only when PW can flow towards the well. To obtain the desired behavior from the system, the following model is employed.
+\begin{alignat}{2}
+    q_{(i,j)} &= 27.3 \, C_v Z_{(i,j)} H^{L,a}_{(i,j)} \sqrt{g/1e5}, &\forall (i,j)\in\mathcal{L}_{SVO}
+    \\
+    {H^{L,a}_{(i,j)}}^2 &= Z^a_{(i,j)} H^{L}_{(i,j)} , &\forall (i,j)\in\mathcal{L}_{SVO}
+    \\
+    q_{(i,j)} &\geq 0, \, H^{L,a}_{(i,j)} \geq 0, &\forall (i,j)\in\mathcal{L}_{SVO}
+\end{alignat}
+
+Control valves can be used to regulate the flowrate passing through an orifice. This flow is a function of the valve characteristics, opening, and the square root of the hydraulic head loss. A preview analysis in valves indicate that headloss is always positive. Thus, flow only occurs in one direction. Due to that, the following model is employed.
+\begin{alignat}{2}
+    q_{(i,j)} &= 27.3 \, C_v \phi_{(i,j)}  \sqrt{H^{L}_{(i,j)}g/1e5}, \forall (i,j)\in\mathcal{L}_{CVO}
+    \\
+    q_{(i,j)} &\geq 0, \, H^{L}_{(i,j)} \geq 0, \forall (i,j)\in\mathcal{L}_{CVO}
+\end{alignat}
+
+
+
+The re-injection template valve can be simplified as it is not desirable to have reverse flux from the wells to the network. Due to that, we consider the following equations,
+\begin{alignat}{2}
+    q_{(i,j)} &= 27.3 \, C_v Z_{(i,j)} \sqrt{g H^{L,a}_{(i,j)}/1e5}
+    \\
+    q_{(i,j)} &\geq 0, \, H^{L,a}_{(i,j)} \geq 0
+    \\
+    H^{L,a}_{(i,j)} &= H^{L}_{(i,j)}(2Z^a_{(i,j)} -1)
+\end{alignat}
+The valve on/off model is approached by this
+\begin{alignat}{3}
+    q_{(i,j)} &= 27.3\,C_v\,Z_{(i,j)}H_{(i,j)}^a\sqrt{g/1e5} & \forall i \in \mathcal{L}_{inter}
+    \\
+    {H_{(i,j)}^a}^2 &= H^{L}_{(i,j)}(2 Z^{a}_{(i,j)} -1) & \forall i \in \mathcal{L}_{inter}
+    \\
+    0 & \leq H_{(i,j)}^a H_{(i,j)}^L & \forall i \in \mathcal{L}_{inter}
+\end{alignat}
+
+The regulated valve is approach as
+\begin{alignat}{3}
+    q_{(i,j)} &= 27.3\,C_v\,\phi_{(i,j)}H_{(i,j)}^a\sqrt{g/1e5} & \forall i \in \mathcal{L}_{inter}
+    \\
+    {H_{(i,j)}^a}^2 &= H^{L}_{(i,j)}(2 Z^{a}_{(i,j)} -1) & \forall i \in \mathcal{L}_{inter}
+    \\
+    0 & \leq H_{(i,j)}^a H_{(i,j)}^L & \forall i \in \mathcal{L}_{inter}
+\end{alignat}
+
+
+\section{Pump selection}
+In the considered system, we have that each re-injection template is associated with a pumping train composed of fixed-speed pumps (FSP) and variable-speed pumps. The operational point of a pumping process is given by the intersection of the pump hydraulic head curve, referred to as QH curve, and the system resistance curve. Manipulation of a pump QH curve is only possible for VSPs as their rotation can be manipulated 
+
+In general, valves are used to manipulate the system resistance curve. As for the pump QH curve, it is 
+
+Due to that, it is possible to manipulate the pumping system operational poing.
+
+
+Before introducing the model of a pumping train, we start by showcasing the model of individual pumps.  
+
+\par For a single fixed-speed pump (FSP), there exist little operational freedom 
+
+the hydraulic head and flowrate relationship is given by the HQ curve. Due to that, little operational freedom is given by FSPs. In fact, one can only turn on or off a FSP.
+
+
+, which is shown below in its most general form.
+\begin{subequations}
+    \begin{equation}
+        H_{i,j} = f_{i,j}(q_{i,j}),    \quad \forall (i,j) \in (FSP, train) \\
+    \end{equation}    
+    where $f_{i,j}:\mathbb{R}\to\mathbb{R}$ represents the HQ curve. For proper operation of the FSP, the operational pumping flowrate is limited to a certain range,
+    \begin{alignat}{2}
+        q_{i,j} - q^{lb}_{i,j} &\geq 0, & \quad \forall (i,j) \in (FSP, train) \\
+        q^{ub}_{i,j} - q_{i,j} &\leq 0, & \quad \forall (i,j) \in (FSP, train)
+    \end{alignat}    
+\end{subequations}
+\par When considering VSPs, a single curve is unable to represent its operational behavior. For variable-speed pumps there exist the possibility of adjusting the pumping operation by changing
+its current rotation.
+For a single variable-speed pump (VSP), the HQ curve is described in its general form below:
+\begin{subequations}
+\begin{equation}
+    H_{i,j} = f_{i,j}(q_{i,j},w_{i,j}), \quad \forall (i,j) \in (VSP, train)\label{VSP_H_bounds}
+\end{equation}
+    where $f_{i,j}:\mathbb{R} \times \mathbb{R} \to \mathbb{R}$. The operational VSP envelop is nonconvex, and it is given by the following set of inequalities constraints. 
+\begin{alignat}{3}
+     q^{lb}_{i,j} & = g^{lb}_{i,j}(H_{i,j}), & \quad \forall (i,j) \in (VSP, train) \\
+     q^{ub}_{i,j} & = g^{ub}_{i,j}(H_{i,j}), & \quad \forall (i,j) \in (VSP, train) \\
+     H^{lb}_{i,j} & = f_{i,j}(q_{i,j},\omega_{i,j}^{lb}), & \quad \forall (i,j) \in (VSP, train)\\
+     H^{ub}_{i,j} & = f_{i,j}(q_{i,j},\omega_{i,j}^{ub}), & \quad \forall (i,j) \in (VSP, train) 
+\end{alignat}
+\end{subequations}
+ 
+%the functions $f_{i,j}$ can be obtained based on any method highlighted in \cite{}.
+% The maximum and minimum operational flowrates of a single pump are given as:
+% while the maximum and minimum hydraulic head are given as: 
+% \begin{alignat}{3}
+%     H^{lb}_{i,j} &= H^{ub}_{i,j} =  f_{i,j} (q_{i,j}), &&& \quad \forall (i,j) \in (FSP, train) \\
+%     H^{lb}_{i,j} & = f_{i,j}(q_{i,j},\omega_{i,j}^{lb}), & \quad H^{ub}_{i,j} & = f_{i,j}(q_{i,j},\omega_{i,j}^{ub}), & \quad \forall (i,j) \in (VSP, train) \label{VSP_H_bounds}
+% \end{alignat}
+% \par The envelope of operation of a variable speed pump is given by~\eqref{VSP_q_bounds} and~\eqref{VSP_H_bounds}. 
+% \begin{equation}
+%     q_{i,j}- q_{i,j}^{lb} \geq 0 
+% \end{equation}
+% \begin{equation}
+%     q_{i,j}^{ub}- q_{i,j} \geq 0 
+% \end{equation}
+\subsection{Pumping train}
+For a pumping system in series with a set of FSP and VSP, one has that the hydraulic head of each pumping train is given as:
+\begin{subequations}
+    \begin{equation}
+        H_j(q_j,\omega_j,b_j) = b_{j}\left(\sum_{i\in FS}  H_{i,j}(q) + \sum_{i\in VSP} H_{i,j}(q,\omega_{i,j})\right), \forall j \in train,
+    \end{equation}
+    where $H_j$ is the hydraulic head of train $j$; $q_j$ is the flowrate through train $j$; $b_j$ is the on/off state of train $j$; $H_{i,j}$ is the hydraulic head at pump $i$ in train $j$; 
+    The minimum and maximum allowed flowrate in the train is given as,
+    \begin{alignat}{2}
+        q_j^{lb} & = b_{j}\max(\{q_{i,j}^{lb}\mid \forall i \in VSP\},\{q_{i,j}^{lb}(H_{i,j})\mid \forall i \in FP\}), \forall j \in train 
+        \\
+        q_j^{ub} & = b_{j}\min(\{q_{i,j}^{ub}\mid \forall i \in VSP\},\{q_{i,j}^{lb}(H_{i,j})\mid \forall i \in FP\}), \forall j \in train 
+    \end{alignat}
+As for the minimum and maximum hydraulic head is given by
+\begin{alignat}{2}
+    H_j^{ub} &= b_{j}\left(\sum_{i\in FS}  H_{i,j}(q) + \sum_{i\in VSP} H_{i,j}(q,\omega^{ub}_{i,j})\right), \forall j \in train \\
+    H_j^{lb} &= b_{j}\left(\sum_{i\in FS}  H_{i,j}(q) + \sum_{i\in VSP} H_{i,j}(q,\omega^{lb}_{i,j})\right), \forall j \in train
+\end{alignat}
+\end{subequations}
+
+
+% \subsection{Pumps in parallel} 
+% For a pumping system in parallel without recycle, one has that the hydraulic head is given as:
+% \begin{subequations}
+%     \begin{equation}
+%         H_j^{lb}(\mathbf{q},\mathbf{b}) = \max(\{b_{j} H^{lb}_{i,j}\mid \forall i \in VSP\},\{b_{j} H_{i,j}^{lb}(q_{i,j}) \mid \forall i \in FP\}), \forall j \in train 
+%     \end{equation}    
+%     \begin{equation}
+%         H_j^{ub}(\mathbf{q},\mathbf{b}) = \min(\{b_{j} H^{ub}_{i,j}\mid \forall i \in VSP\},\{b_{j} H_{i,j}^{ub}(q_{i,j}) \mid \forall i \in FP\}), \forall j \in train 
+%     \end{equation}    
+% \end{subequations}
+
+% flowrate is given as:
+% \begin{subequations}
+%     \begin{equation}
+%         q_j^{lb}(\omega,\mathbf{b}) = b_{j}\max(\{q_{i,j}^{lb}(\omega_{i,j})\mid \forall i \in VSP\},\{q_{i,j}^{lb}\mid \forall i \in FP\}), \forall j \in train 
+%     \end{equation}    
+%     \begin{equation}
+%         q_j^{ub}(\mathbf{q},\omega,\mathbf{b}) = b_{j}\min(\{q_{i,j}^{ub}(\omega_{i,j})\mid \forall i \in FS \cup VSP\}), \forall j \in train
+%     \end{equation}
+% \end{subequations}
+
+
+
+% hydraulic head is given as
+% \begin{subequations}
+%     \begin{equation}
+%         q_j(\omega,\mathbf{b}) = b_{j}\left(\sum_{i\in FS}  H_{i,j}(q) + \sum_{i\in VSP} H_{i,j}(q,\omega_{i,j})\right), \forall j \in train
+%     \end{equation}
+%     The minimum and maximum allowed flowrate in the train is given as:
+%     \begin{subequations}
+%         \begin{equation}
+%             q_j^{lb}(\omega,\mathbf{b}) = b_{j}\max(\{q_{i,j}^{lb}(\omega_{i,j})\mid \forall i \in VSP\},\{q_{i,j}^{lb}\mid \forall i \in FP\}), \forall j \in train 
+%         \end{equation}    
+%         \begin{equation}
+%             q_j^{ub}(\mathbf{q},\omega,\mathbf{b}) = b_{j}\min(\{q_{i,j}^{ub}(\omega_{i,j})\mid \forall i \in FS \cup VSP\}), \forall j \in train
+%         \end{equation}
+%     \end{subequations}
+% \end{subequations}  
+% \subsection{IDK}
+% The maximum and minimum hydraulic head are given as 
+% \begin{alignat}{2}
+%     H^{ub}(q) &= \sum_{i\in FS} H_i(q) + \sum_{i\in VSP} H_i(q,\omega^{ub})\label{sp_maxhead} \\
+%     H^{lb} &= 0 \label{sp_minhead}
+% \end{alignat}
+% where~\eqref{sp_maxhead} is the maximum hydraulic head that a pumping system in series can deliver for a given flowrate;~\eqref{sp_minhead} is the minimum hydraulic head that a pumping system in series can deliver. 
+
+% The maximum flowrate is given as
+% \begin{subequations}
+%     \begin{equation}
+%         q^{ub}(\omega_1,\omega_2,\dots,\omega_{VSP}) = \max(q_1^{ub}, q_2^{ub},\dots, q^{ub}_{FSP}, q^{ub}_1(\omega_1), q^{ub}_2(\omega_2),\dots,q^{ub}_{VSP}(\omega_{VSP}))
+%     \end{equation}    
+%     \begin{equation}
+%         q - q^{ub}(\omega_1,\omega_2,\dots,\omega_{VSP}) \geq 0 
+%     \end{equation}
+% \end{subequations}
+% This can be replaced by 
+% \begin{alignat}{2}
+%     q_i^{ub} - q &\geq 0, \quad \forall i \in{}, q_i^{ub}(\omega_i) - q &\geq 0, \quad \forall i \in{}  \\
+%     q - q_i^{lb} &\geq 0, \quad \forall i \in{}, q - q_i^{lb}(\omega_i) &\geq 0, \quad \forall i \in{} 
+% \end{alignat}
+
+% \subsection{Pumps in parallel}
+% \begin{equation}
+%     H(\mathbf{q},\omega,\mathbf{b})= H_i(q_i), \forall i \in FP \cup VSP
+% \end{equation}
+% \section{Control structure}
+% For a pumping system is parallel one has that the hydraulic head gain is given by:
+% \begin{equation}
+%     H(q,\omega) = H_i(q), \quad \forall i \in,H(q_i,\omega) = H_i(q_i,\omega_i), \quad \forall i \in 
+% \end{equation}
+% The maximum and minimum hydraulic head are given as 
+% \begin{alignat}{2}
+%     H^{ub}(q) &= \sum_i^{nf} H_i(q) + \sum_i^{nv} H_i(q,\omega^{ub}) \\
+%     H^{lb}(q) &= \sum_i^{nf} H_i(q) + \sum_i^{nv} H_i(q,\omega^{lb}) 
+% \end{alignat}
+% The minimum flowrate is given as
+% \begin{subequations}
+%     \begin{equation}
+%         q^{lb}(\omega_1,\omega_2,\dots,\omega_{VSP}) = \max(q_1^{lb}, q_2^{lb},\dots, q^{lb}_{FSP}, q^{lb}_1(\omega_1), q^{lb}_2(\omega_2),\dots,q^{lb}_{VSP}(\omega_{VSP}))
+%     \end{equation}    
+%     \begin{equation}
+%         q - q^{lb}(\omega_1,\omega_2,\dots,\omega_{VSP}) \geq 0 
+%     \end{equation}
+% \end{subequations}
+% The maximum flowrate is given as
+% \begin{subequations}
+%     \begin{equation}
+%         q^{ub}(\omega_1,\omega_2,\dots,\omega_{VSP}) = \max(q_1^{ub}, q_2^{ub},\dots, q^{ub}_{FSP}, q^{ub}_1(\omega_1), q^{ub}_2(\omega_2),\dots,q^{ub}_{VSP}(\omega_{VSP}))
+%     \end{equation}    
+%     \begin{equation}
+%         q - q^{ub}(\omega_1,\omega_2,\dots,\omega_{VSP}) \geq 0 
+%     \end{equation}
+% \end{subequations}
+% This can be replaced by 
+% \begin{alignat}{2}
+%     q_i^{ub} - q &\geq 0, \quad \forall i \in{}, q_i^{ub}(\omega_i) - q &\geq 0, \quad \forall i \in{}  \\
+%     q - q_i^{lb} &\geq 0, \quad \forall i \in{}, q - q_i^{lb}(\omega_i) &\geq 0, \quad \forall i \in{} 
+% \end{alignat}

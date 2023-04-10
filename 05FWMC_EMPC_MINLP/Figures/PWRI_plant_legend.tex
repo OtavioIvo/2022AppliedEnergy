@@ -1,0 +1,29 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+\usetikzlibrary{circuits}
+\usetikzlibrary{circuits.pid.ISO14617}
+\usetikzlibrary{positioning,calc}
+\begin{document}
+\begin{tikzpicture}[circuit pid ISO14617,
+    circuit declare symbol = node,
+    set node graphic = {draw, shape=circle,minimum size=5mm},
+    circuit declare symbol = sink,
+    set sink graphic = {draw, shape=circle,minimum size=6mm,very thick},
+    ]
+    \node [circuit symbol unit=6pt] [vacuum vessel,info={right:Vessel}] at (0,0) {};
+    \node [circuit symbol unit=4pt] [node,info={right:Junction}] at (0,-1) {};
+    \node [circuit symbol unit=4pt] [node] at (0,-2) {};
+    \node [circuit symbol unit=4pt] [sink,info={right:Sink}] at (0,-2) {};
+    %% Arcs
+    % Valve
+    \node [circuit symbol unit=6pt] [valve,info={right:Valve}] at (0,-3) {};
+    % Pumps
+    \node [circuit symbol unit=6pt] [pump=centrifugal,info={right:FSP}] at (0,-4) {};
+    \node [circuit symbol unit=6pt] [pump={centrifugal,adjustable},info={right:VSP}] at (0,-5) {};
+    % Pipeline
+    \node [circuit symbol unit=6pt] [info={right:Pipe}] at (0.1,-6) {};
+    \draw (-0.25,-6) to (0.25,-6);
+\end{tikzpicture}
+\end{document}

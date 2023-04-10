@@ -1,0 +1,90 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+\usetikzlibrary{circuits}
+\usetikzlibrary{circuits.pid.ISO14617}
+\usetikzlibrary{positioning,calc}
+\begin{document}
+    \begin{tikzpicture}[circuit pid ISO14617,
+    circuit declare symbol = node,
+    set node graphic = {draw, shape=circle,minimum size=5mm},
+    circuit declare symbol = sink,
+    set sink graphic = {draw, shape=circle,minimum size=6mm,very thick},
+    every valve/.style={circuit symbol unit=7pt}
+    ]
+    \node [circuit symbol unit=12pt] [vacuum vessel={name=1},info=center:1] at (0,0) {};
+    \node [node={name=2}] at (-2,-2) {2};
+    \node [sink] at (-2,-2) {};
+    \node [node={name=3}] at (2,-2) {3};
+    \node [node={name=4}] at (4,-2) {4};    
+    
+    \node [node={name=9}] at (2,-4) {9};
+    \node [node={name=10}] at (4,-4) {10};
+    
+    % RIT_\beta
+    \node [node={name=5}] at (6,-2) {5};
+    \node [node={name=6}] at (9,-1) {6};
+    \node [node={name=7}] at (10.25,-.25) {7};
+    \node [sink] at (10.25,-0.25) {};
+    \node [node={name=8}] at (10.25,-1.75) {8};
+    \node [sink] at (10.25,-1.75) {};
+    % RIT_\alpha
+    \node [node={name=11}] at (6,-4) {11};
+    \node [node={name=12}] at (9,-3.25) {12};
+    \node [node={name=13}] at (10.25,-2.5) {13};
+    \node [sink] at (10.25,-2.5) {};
+    \node [node={name=14}] at (10.25,-4) {14};
+    \node [sink] at (10.25,-4) {};
+    
+    % Pumping station
+    \draw (1) to (0,-2) to [pump=centrifugal, flow path, pos=0.9] (3);
+    \draw (1) to (0,-4) to [pump=centrifugal, flow path, pos=0.9] (9);
+
+    \draw (3) to [pump={centrifugal,adjustable}, flow path, pos=0.9] (4);
+    \draw (9) to [pump={centrifugal,adjustable}, flow path, pos=0.9] (10);
+    
+	% Ocean discharge
+    \draw [circuit symbol unit=6pt] (1) to [measurement point={name=OiW}] (0,-2) to [valve,flow path, pos=0.9] (2);
+	\node [circuit symbol unit=10pt, measurement device={central control room}, xshift=-0.5cm, yshift=-16.5, at={OiW.west}{}, measure={QI}] {};
+	
+	% Interconnection
+    \draw [circuit symbol unit=6pt] (3) to [valve={name=V1}] (9);
+    \draw [circuit symbol unit=6pt] (10) to [valve={name=V2}] (4);
+
+    % Recycle
+    \draw [circuit symbol unit=6pt] (3) to [valve, flow path, pos=0.9] (2,0) to (1);
+    \draw [circuit symbol unit=6pt] (9) to (2.5,-3) to [valve, flow path, pos=0.9] (2.5,0) to [flow path, pos=0.9] (1);
+    \draw [circuit symbol unit=6pt] (10) to (4.5,-3) to [valve, flow path, pos=0.9] (4.5,0) to (1);
+    \draw [circuit symbol unit=6pt] (4) to [valve, flow path, pos=0.9] (4,0) to (1);
+    
+    % To RIT_beta
+    \draw [circuit symbol unit=6pt] (4) to [valve, flow path, pos=0.9] (5);
+    \draw [flow path, pos=0.9] (5) to (6,-1) to (6);
+    \draw [flow path, pos=0.9] (6) to (7);
+    \draw [circuit symbol unit=5pt] (6) to [valve, flow path, pos=0.9] (8);
+    
+    % to RIT_alpha
+    \draw [circuit symbol unit=6pt] (10) to [valve, flow path, pos=0.9] (11);
+    \draw [flow path, pos=0.9] (11) to (6,-3.25) to (12);
+    \draw [flow path, pos=0.9] (12) to  (13);
+    \draw [circuit symbol unit=5pt] (12) to [valve, flow path, pos=0.9] (14);
+    
+    % Processed PW
+    \node [text width=2cm,align=center] at (-2,0) {Processed PW};
+    \draw [flow path] (-1.25,0) -- (1);
+
+    % Boxes
+    \draw [dotted, thick] (1,0.5) to node[below] {Pumping station} (5.4,0.5) to (5.4,-4.5) to (0.25,-4.5) to (0.25,-1.5) to (1,0.5);
+    \draw [dotted, thick] (-0.25,-1.6) to (-2.8,-1.6) to (-2.8, -3) to node[above] {Ocean discharge} (-0.25,-3) to (-0.25,-1.6);
+    \draw [dotted, thick] (5.7,-4.5) to (5.7,0.5) to node[below] {Riser} (8.4,0.5) to (8.4,-4.5) to (5.7,-4.5);
+    
+
+%    \draw [dashed] (-1.5,-7.7) to (1.5,-7.7) to (1.5,-9.7) to node[above] {RIT$_\alpha$}(-1.5,-9.7) to (-1.5,-7.7);
+    
+        \draw [dotted, thick] (8.7,-4.5) to (8.7,-2.15) to (10.7,-2.15) to (10.7,-4.5) to (8.7,-4.5);
+        \node at  (9.2,-2.4) {RIT$_\alpha$};
+        \draw [dotted, thick] (8.7,-2.1) to (8.7,0.5) to (10.7,0.5) to (10.7,-2.1) to (8.7,-2.1);
+        \node at  (9.2,0.2) {RIT$_\beta$};
+    \end{tikzpicture}
+\end{document}
